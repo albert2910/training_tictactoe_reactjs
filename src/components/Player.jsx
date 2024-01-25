@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-export default function Player({name, symbol}) {
+export default function Player({name, symbol, isActive}) {
     const [valueButton, setValueButton] = useState('Edit');
     const [valueInput, setValueInput] = useState(name);
     function handleClickButton(valueButton) {
@@ -22,7 +22,7 @@ export default function Player({name, symbol}) {
         input = <span className="player-name">{valueInput}</span>;
     }
     return (
-        <li>
+        <li className={isActive ? 'active' : undefined}>
              <span className="player">
                  {input}
                  <span className="player-symbol">{symbol}</span>
