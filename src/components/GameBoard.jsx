@@ -13,13 +13,13 @@ export default function GameBoard({onSelectSquare, activePlayer}) {
         setGameBoard((prevGameBoard) => {
             const updateGameBoard = [...prevGameBoard.map(innerArray => [...innerArray])];
 
-            // if(updateGameBoard[rowIndex][colIndex] === null) {
+            if(updateGameBoard[rowIndex][colIndex] === null) {
                 updateGameBoard[rowIndex][colIndex] = activePlayer;
-                return updateGameBoard;
-            // }
-
+                onSelectSquare();
+            }
+            return updateGameBoard;
         });
-        onSelectSquare();
+
     }
 
     return (
