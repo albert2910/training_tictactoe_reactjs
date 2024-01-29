@@ -1,6 +1,6 @@
 import Player from "./components/Player.jsx";
 import GameBoard from "./components/GameBoard.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Log from "./components/Log.jsx";
 import GameOver from "./components/GameOver.jsx";
 
@@ -19,7 +19,11 @@ function deriveActivePlayer(turns) {
 }
 
 function App() {
-
+const [player, setPlayer] = useState({
+    X: "player 1",
+    O: "player 2"
+}
+);
     const [turn, setTurn] = useState([]);
     const [countSelect, setCountSelect] = useState(0);
     const activePlayer = deriveActivePlayer(turn);
@@ -52,16 +56,15 @@ function App() {
     }
 
     function notify(rowIndex, colIndex) {
-        console.log(countSelect);
         // debugger
         if (checkWinner(rowIndex, colIndex)) {
-            winner = activePlayer === "X" ? "O" : "X";
+            let winnerSymbol = activePlayer === "X" ? "O" : "X";
+            winner = player[winnerSymbol];
             notification = winner + " is winner!";
 
         } else if (countSelect === 9 && !checkWinner(rowIndex, colIndex)) {
             notification = "Hòa rồi chơi ván mới đê!";
         }
-        console.log(notification);
     }
 
     function checkWinner(rowIndex, colIndex) {
@@ -117,13 +120,22 @@ function App() {
         setCountSelect(0);
     }
 
+    function handlePlayerNameChange(symbol, newName) {
+
+        setPlayer(prevPlayer => {
+            return {
+                ...prevPlayer,
+                [symbol]: newName
+            };
+        });
+    }
 
     return (
         <main>
             <div id="game-container">
                 <ol id="players">
-                    <Player name='Player 1' symbol='X' isActive={activePlayer === 'X'}/>
-                    <Player name='Player 2' symbol='O' isActive={activePlayer === 'O'}/>
+                    <Player name='Player 1' symbol='X' isActive={activePlayer === 'X'} onChangeName={handlePlayerNameChange}/>
+                    <Player name='Player 2' symbol='O' isActive={activePlayer === 'O'} onChangeName={handlePlayerNameChange}/>
                 </ol>
                 {winner || notification ? <GameOver winner={winner} onRematch={handleRestart}/> : null}
                 <GameBoard onSelectSquare={handleSelectSquare} gameBoard={gameBoard}

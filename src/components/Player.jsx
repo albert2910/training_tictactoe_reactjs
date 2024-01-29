@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-export default function Player({name, symbol, isActive}) {
+export default function Player({name, symbol, isActive, onChangeName}) {
     const [valueButton, setValueButton] = useState('Edit');
     const [valueInput, setValueInput] = useState(name);
 
@@ -15,7 +15,8 @@ export default function Player({name, symbol, isActive}) {
 
     function handleOnchange(event) {
         setValueInput(event.target.value);
-        name = valueInput;
+        onChangeName(symbol,event.target.value);
+        name = event.target.value;
     }
 
     let input = <input className="player" type="text" value={valueInput} onChange={handleOnchange}/>;
