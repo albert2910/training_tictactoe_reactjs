@@ -3,6 +3,7 @@ import {useState} from "react";
 export default function Player({name, symbol, isActive}) {
     const [valueButton, setValueButton] = useState('Edit');
     const [valueInput, setValueInput] = useState(name);
+
     function handleClickButton(valueButton) {
 
         if(valueButton === 'Edit') {
