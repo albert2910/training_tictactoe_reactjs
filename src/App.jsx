@@ -20,7 +20,6 @@ function deriveActivePlayer(turns) {
 function App() {
 
     const [turn, setTurn] = useState([]);
-    const [hasWinner, setHasWinner] = useState(null);
     const [countSelect, setCountSelect] = useState(0);
     const activePlayer = deriveActivePlayer(turn);
     let notification = null;
@@ -48,7 +47,6 @@ function App() {
 
         });
 
-        // notify(rowIndex, colIndex);
     }
 
     function notify(rowIndex, colIndex) {
@@ -118,7 +116,7 @@ function App() {
                     <Player name='Player 2' symbol='O' isActive={activePlayer === 'O'}/>
                 </ol>
                 {notification}
-                <GameBoard onSelectSquare={handleSelectSquare} gameBoard={gameBoard}/>
+                <GameBoard onSelectSquare={handleSelectSquare} gameBoard={gameBoard} checkEndGame={notification !== null}/>
             </div>
             <Log turns={turn}/>
         </main>
