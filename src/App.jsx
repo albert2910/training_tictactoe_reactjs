@@ -2,6 +2,7 @@ import Player from "./components/Player.jsx";
 import GameBoard from "./components/GameBoard.jsx";
 import {useState} from "react";
 import Log from "./components/Log.jsx";
+import GameOver from "./components/GameOver.jsx";
 
 const initialGameBoard = [
     [null, null, null],
@@ -23,8 +24,9 @@ function App() {
     const [countSelect, setCountSelect] = useState(0);
     const activePlayer = deriveActivePlayer(turn);
     let notification = null;
+    let winner = null;
 
-    let gameBoard = initialGameBoard;
+    let gameBoard = [...initialGameBoard.map(array => [...array])];
 
     for (const t of turn) {
         const {square, player} = t;
@@ -53,10 +55,13 @@ function App() {
         console.log(countSelect);
         // debugger
         if (checkWinner(rowIndex, colIndex)) {
-            notification = (activePlayer === "X" ? "O" : "X") + " is winner!";
+            winner = activePlayer === "X" ? "O" : "X";
+            notification = winner + " is winner!";
+
         } else if (countSelect === 9 && !checkWinner(rowIndex, colIndex)) {
             notification = "Hòa rồi chơi ván mới đê!";
         }
+        console.log(notification);
     }
 
     function checkWinner(rowIndex, colIndex) {
@@ -107,6 +112,11 @@ function App() {
         return count === 3;
     }
 
+    function handleRestart() {
+        setTurn([]);
+        setCountSelect(0);
+    }
+
 
     return (
         <main>
@@ -115,8 +125,9 @@ function App() {
                     <Player name='Player 1' symbol='X' isActive={activePlayer === 'X'}/>
                     <Player name='Player 2' symbol='O' isActive={activePlayer === 'O'}/>
                 </ol>
-                {notification}
-                <GameBoard onSelectSquare={handleSelectSquare} gameBoard={gameBoard} checkEndGame={notification !== null}/>
+                {winner || notification ? <GameOver winner={winner} onRematch={handleRestart}/> : null}
+                <GameBoard onSelectSquare={handleSelectSquare} gameBoard={gameBoard}
+                           checkEndGame={notification !== null}/>
             </div>
             <Log turns={turn}/>
         </main>
